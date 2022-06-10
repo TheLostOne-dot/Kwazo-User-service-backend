@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const db = require("./src/models/sequelize.index")
 const Role = db.role;
+const cookieParser = require("cookie-parser");
 
 db.sequelize.sync();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 // simple route
 app.get('/', (req, res) => {

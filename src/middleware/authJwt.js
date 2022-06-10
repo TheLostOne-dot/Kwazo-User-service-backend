@@ -4,7 +4,7 @@ const db = require("../models/sequelize.index");
 const User = db.user;
 const Role = db.role;
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.cookies.access_token;
   if (!token) {
     return res.status(403).send({
       message: "No token provided!",
