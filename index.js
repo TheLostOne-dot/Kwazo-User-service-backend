@@ -1,11 +1,32 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const cors = require("cors");
+const app = express();
+const db = require("./src/models/sequelize.index")
+const Role = db.role;
 
+db.sequelize.sync();
+
+var corsOptions = {
+  origin: "http://localhost:8081"
+};
+app.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// simple route
 app.get('/', (req, res) => {
-  res.send('User service running!')
+  res.json({message:'User service running!'});
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
+
+require('./src/routes/auth.routes')(app);
+require('./src/routes/user.routes')(app);
