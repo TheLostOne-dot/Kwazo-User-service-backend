@@ -6,7 +6,7 @@ name: CD
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ master ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -14,8 +14,8 @@ on:
 # Environment variables available to all jobs and steps in this workflow
 env:
   NAMESPACE: kong
-  SECRET: theboardgameclubsupersecret
-  APP_NAME: theboardgameclub-user
+  SECRET: kwazosecret
+  APP_NAME: kwazo-user
   
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
     
     # Container build and push to a Azure Container Registry (ACR)
     - run: |
-        docker build . -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} -f API/Dockerfile
+        docker build . -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} -f Dockerfile
         docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
         sed -i'' -e 's/ACR_URL/${{ secrets.REGISTRY_NAME }}.azurecr.io/g' -e 's/AKS_URL/${{ env.REGISTRY_NAME }}.azurecr.io/g' -e 's/IMAGE_LABEL/${{ github.sha }}/g' k8s.yaml
       working-directory: ./
