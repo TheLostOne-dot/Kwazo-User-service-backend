@@ -23,9 +23,9 @@ jobs:
     - name: Run test
       run: npm test
 
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/dotnet@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --all-projects
+    # - name: Run Snyk to check for vulnerabilities
+    #   uses: snyk/actions/dotnet@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     args: --all-projects
