@@ -8,16 +8,16 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   Role.findOne({
-    where:{
-      name: req.body.role
-    }
+    where: {
+      name: req.body.role,
+    },
   }).then((role) => {
     // Save User to Database
     User.create({
       username: req.body.username,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
-      role_id: role.id
+      role_id: role.id,
     })
       .then(() => {
         res.send({ message: "User was registered successfully!" });
@@ -25,7 +25,7 @@ exports.signup = (req, res) => {
       .catch((err) => {
         res.status(500).send({ message: err.message });
       });
-  })
+  });
 };
 exports.signin = (req, res) => {
   User.findOne({
@@ -52,21 +52,34 @@ exports.signin = (req, res) => {
       });
       var authorities = [];
       Role.findOne({
-        where:{
-          id: user.role_id
-        }
+        where: {
+          id: user.role_id,
+        },
       }).then((role) => {
-          authorities.push("ROLE_" + role.name.toUpperCase());
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          role: authorities,
-          accessToken: token,
-        });
+        authorities.push("ROLE_" + role.name.toUpperCase());
+        return res
+          .cookie("access_token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .status(200)
+          .send({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: authorities,
+            message: "Logged in successfully"
+          })
       });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.signout = (req, res) => {
+  return res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ message: "Successfully logged out!" });
 };
