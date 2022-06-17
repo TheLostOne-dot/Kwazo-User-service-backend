@@ -45,7 +45,7 @@ isModerator = (req, res, next) => {
         id: user.role_id,
       },
     }).then((role) => {
-      if (role.name === "moderator" || "admin") {
+      if (role.name === "moderator" || role.name === "admin") {
         next();
         return;
       }
