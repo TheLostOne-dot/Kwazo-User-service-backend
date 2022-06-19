@@ -1,14 +1,22 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: kwazo-user-database
+  name: kwazo
 type: Opaque
 data:
   MYSQLDB_HOST: a3dhem8ubXlzcWwuZGF0YWJhc2UuYXp1cmUuY29t
   MYSQLDB_USER: a3dhem8=
   MYSQLDB_PASSWORD: QWRtaW5pc3RyYXRvcjE=
-  MYSQLDB_DATABASE: dXNlcnNlcnZpY2U=
   MYSQLDB_PORT: MzMwNg==
+  AMQP_URL: YW1xcHM6Ly93bXBraW55czptQjcyMHpuUnNPN0EyV25tM2I3MElTd0ZMVmt6V0ZTeUBnb29zZS5ybXEyLmNsb3VkYW1xcC5jb20vd21wa2lueXM=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kwazo-user-database
+type: Opaque
+data:
+  MYSQLDB_DATABASE: dXNlcnNlcnZpY2U=
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,6 +39,8 @@ spec:
         envFrom:
         - secretRef:
             name: kwazo-user-database
+        - secretRef:
+            name: kwazo
         ports:
         - containerPort: 8080
         resources: {}
@@ -65,3 +75,18 @@ spec:
             name: kwazo-user-service
             port:
               number: 80
+      - path: /posts
+        pathType: Prefix
+        backend:
+          service:
+            name: kwazo-post-service
+            port:
+              number: 80
+      - path: /comment
+        pathType: Prefix
+        backend:
+          service:
+            name: kwazo-comment-service
+            port:
+              number: 80
+              
