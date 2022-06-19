@@ -61,7 +61,7 @@ exports.signin = (req, res) => {
         return res
           .cookie("access_token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV,
+            secure: process.env.NODE_ENV === "production",
           })
           .status(200)
           .send({
