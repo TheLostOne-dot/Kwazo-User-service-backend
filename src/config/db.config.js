@@ -1,4 +1,3 @@
-const fs = require("fs")
 require("dotenv").config();
 module.exports = {
   HOST: process.env.MYSQLDB_HOST,
@@ -6,7 +5,6 @@ module.exports = {
   PASSWORD: process.env.MYSQLDB_PASSWORD,
   DB: process.env.MYSQLDB_DATABASE,
   port: process.env.MYSQLDB_PORT,
-  // ssl: { ca: fs.readFileSync("../DigiCertGlobalRootCA.crt.pem") },
   dialect: "mysql",
   pool: {
     max: 5,

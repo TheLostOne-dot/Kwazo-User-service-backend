@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "Kwazo-secret-key"
+    secret: process.env.JWT_SECRET
 };
