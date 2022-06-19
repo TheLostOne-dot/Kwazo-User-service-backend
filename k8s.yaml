@@ -9,6 +9,7 @@ data:
   MYSQLDB_PASSWORD: QWRtaW5pc3RyYXRvcjE=
   MYSQLDB_PORT: MzMwNg==
   AMQP_URL: YW1xcHM6Ly93bXBraW55czptQjcyMHpuUnNPN0EyV25tM2I3MElTd0ZMVmt6V0ZTeUBnb29zZS5ybXEyLmNsb3VkYW1xcC5jb20vd21wa2lueXM=
+  JWT_SECRET: S3dhem8tc2VjcmV0LWtleQ==
 ---
 apiVersion: v1
 kind: Secret
