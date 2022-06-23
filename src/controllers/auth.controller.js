@@ -8,17 +8,10 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
-  Role.findOne({
-    where: {
-      name: req.body.role,
-    },
-  }).then((role) => {
-    // Save User to Database
     User.create({
       username: req.body.username,
       email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-      role_id: role.id,
+      password: bcrypt.hashSync(req.body.password, Math.floor(Math.random() * 10)+1),
     })
       .then(() => {
         res.send({ message: "User was registered successfully!" });
@@ -26,7 +19,7 @@ exports.signup = (req, res) => {
       .catch((err) => {
         res.status(500).send({ message: err.message });
       });
-  });
+  // });
 };
 exports.signin = (req, res) => {
   User.findOne({
@@ -48,16 +41,14 @@ exports.signin = (req, res) => {
           message: "Invalid Password!",
         });
       }
-      var token = jwt.sign({ username: user.username }, config.secret, {
-        expiresIn: 86400, // 24 hours
-      });
-      var authorities = [];
       Role.findOne({
         where: {
           id: user.role_id,
         },
       }).then((role) => {
-        authorities.push("ROLE_" + role.name.toUpperCase());
+        var token = jwt.sign({ username: user.username, role: role.name }, config.secret, {
+          expiresIn: 86400, // 24 hours
+        });
         return res
           .cookie("access_token", token, {
             httpOnly: true,
@@ -65,11 +56,7 @@ exports.signin = (req, res) => {
           })
           .status(200)
           .send({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: authorities,
-            message: "Logged in successfully",
+            message: "Logged in successfully"
           });
       });
     })

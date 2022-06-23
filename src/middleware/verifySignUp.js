@@ -33,24 +33,36 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
   });
 };
 
-checkRolesExisted = (req, res, next) => {
-  Role.findOne({
-    where: {
-      name: req.body.role,
-    },
-  }).then((role) => {
-    if(!role){
-      res.status(404).send({
-        message: "No such role!"
-      });
-      return
-    }
-    next();
-  })
-};
+checkPasswordLength = (req, res, next) => {
+  var password = req.body.password
+  if(password.length < 6){
+    res.status(400).send({
+      message: "Your password must be atleast 6 characters long."
+    })
+    return
+  }
+  next();
+}
+
+// checkRolesExisted = (req, res, next) => {
+//   Role.findOne({
+//     where: {
+//       name: req.body.role,
+//     },
+//   }).then((role) => {
+//     if(!role){
+//       res.status(404).send({
+//         message: "No such role!"
+//       });
+//       return
+//     }
+//     next();
+//   })
+// };
 
 const verifySignUp = {
     checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
-    checkRolesExisted: checkRolesExisted
+    // checkRolesExisted: checkRolesExisted
+    checkPasswordLength: checkPasswordLength
   };
   module.exports = verifySignUp;

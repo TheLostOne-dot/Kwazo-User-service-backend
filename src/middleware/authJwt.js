@@ -5,9 +5,6 @@ const User = db.user;
 const Role = db.role;
 verifyToken = (req, res, next) => {
   let token = req.cookies.access_token;
-  console.log(req.cookies);
-  console.log(req.headers);
-  console.log(req.cookies.access_token);
   if (!token) {
     return res.status(403).send({
       message: "No token provided!",
@@ -24,7 +21,8 @@ verifyToken = (req, res, next) => {
   });
 };
 isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
+  var id = req.userId || req.params.id
+  User.findByPk(id).then((user) => {
     Role.findOne({
       where: {
         id: user.role_id,
