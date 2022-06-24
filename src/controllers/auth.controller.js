@@ -46,7 +46,7 @@ exports.signin = (req, res) => {
           id: user.role_id,
         },
       }).then((role) => {
-        var token = jwt.sign({ username: user.username, role: role.name }, config.secret, {
+        var token = jwt.sign({ username: user.username }, config.secret, {
           expiresIn: 86400, // 24 hours
         });
         return res

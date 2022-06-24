@@ -21,8 +21,12 @@ verifyToken = (req, res, next) => {
   });
 };
 isAdmin = (req, res, next) => {
-  var id = req.userId || req.params.id
-  User.findByPk(id).then((user) => {
+  var token = req.headers.cookie;
+  var test = jwt.verify(token.replace("access_token=", ""), process.env.JWT_SECRET);
+  User.findOne({
+    where: {
+      username: test.username
+    }}).then((user) => {
     Role.findOne({
       where: {
         id: user.role_id,
@@ -40,7 +44,13 @@ isAdmin = (req, res, next) => {
   });
 };
 isModerator = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
+  var token = req.headers.cookie;
+  var test = jwt.verify(token.replace("access_token=", ""), process.env.JWT_SECRET);
+  User.findOne({
+    where: {
+      username: test.username
+    }
+  }).then((user) => {
     Role.findOne({
       where: {
         id: user.role_id,
@@ -57,7 +67,13 @@ isModerator = (req, res, next) => {
   });
 };
 isModeratorOrAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
+  var token = req.headers.cookie;
+  var test = jwt.verify(token.replace("access_token=", ""), process.env.JWT_SECRET);
+  User.findOne({
+    where: {
+      username: test.username
+    }
+  }).then((user) => {
     user.getRoles().then((roles) => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "moderator") {
