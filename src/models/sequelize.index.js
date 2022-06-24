@@ -22,7 +22,7 @@ db.role = require("./role.model")(sequelize, Sequelize);
 
 //One-To-Many
 db.role.hasMany(db.user, {
-  foreignKey: { name: "role_id", allowNull: false },
+  foreignKey: { name: "role_id", allowNull: false, defaultValue: 1 },
 });
 
 //Many-To-Many

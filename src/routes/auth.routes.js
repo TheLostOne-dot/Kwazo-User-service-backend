@@ -1,4 +1,4 @@
-const { verifySignUp } = require("../middleware/middleware.index");
+const { verifySignUp, authJwt } = require("../middleware/middleware.index");
 const controller = require("../controllers/auth.controller");
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -12,11 +12,17 @@ module.exports = function (app) {
     "/api/auth/signup",
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
-      verifySignUp.checkRolesExisted,
+      verifySignUp.checkPasswordLength
     ],
     controller.signup
   );
   app.post("/api/auth/signin", controller.signin);
-  app.post("/api/auth/signout", controller.signout);
-  app.delete("/api/auth/:id", controller.delete);
+  app.post("/api/auth/signout",[
+    authJwt.verifyToken
+  ], controller.signout);
+  app.delete("/api/auth/:id", [
+    authJwt.verifyToken,
+    authJwt.isAdmin
+  ],
+  controller.delete);
 };
