@@ -68,15 +68,15 @@ jobs:
         imagepullsecrets: |
           ${{ env.SECRET }}
         namespace: ${{ env.NAMESPACE }}
-  k6_load_test:
-    name: k6 Load Test
-    runs-on: ubuntu-latest
+  # k6_load_test:
+  #   name: k6 Load Test
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
 
-      - name: Run local k6 test
-        uses: grafana/k6-action@v0.2.0
-        with:
-          filename: test.js      
+  #     - name: Run local k6 test
+  #       uses: grafana/k6-action@v0.2.0
+  #       with:
+  #         filename: test.js      
