@@ -9,7 +9,8 @@ require("dotenv").config();
 db.sequelize.sync();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: ["http://localhost:4200"],
+  credentials: true
 };
 app.use(cors(corsOptions));
 
