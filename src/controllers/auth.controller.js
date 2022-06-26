@@ -47,14 +47,12 @@ exports.signin = (req, res) => {
         },
       }).then((role) => {
         var token = jwt.sign({ username: user.username, role: role.name }, config.secret, {
-          expiresIn: 86400, // 24 hours
+          expiresIn: 43200, // 12 hours
         });
         return res
           .cookie("access_token", token, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production",
-            sameSite: 'none',
-            Secure
+            secure: process.env.NODE_ENV === "production"
           })
           .status(200)
           .send({
