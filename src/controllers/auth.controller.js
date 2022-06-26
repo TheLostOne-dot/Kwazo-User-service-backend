@@ -52,9 +52,9 @@ exports.signin = (req, res) => {
         return res
           .cookie("access_token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: 'none',
-            secure: false
+            // secure: process.env.NODE_ENV === "production",
+            // sameSite: 'none',
+            // secure: false
           })
           .status(200)
           .send({
