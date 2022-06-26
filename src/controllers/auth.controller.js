@@ -53,8 +53,8 @@ exports.signin = (req, res) => {
           .cookie("access_token", token, {
             httpOnly: true,
             // secure: process.env.NODE_ENV === "production",
-            // sameSite: 'none',
-            // secure: false
+            sameSite: 'none',
+            secure: false
           })
           .status(200)
           .send({
