@@ -54,7 +54,7 @@ exports.signin = (req, res) => {
             httpOnly: true,
             // secure: process.env.NODE_ENV === "production",
             sameSite: 'none',
-            secure: false
+            Secure
           })
           .status(200)
           .send({
