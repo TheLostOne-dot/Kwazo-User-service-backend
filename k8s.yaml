@@ -49,6 +49,56 @@ spec:
             cpu: 500m
           requests:
             cpu: 250m
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kwazo-post
+  template:
+    metadata:
+      labels:
+        app: kwazo-post
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: kwazo-post
+        image: ACR_URL/kwazo-post:IMAGE_LABEL         
+        envFrom:
+        - secretRef:
+            name: kwazo-post-database
+        - secretRef:
+            name: kwazo
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 250m
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kwazo-comment		
+  template:
+    metadata:
+      labels:
+        app: kwazo-comment
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: kwazo-comment
+        image: ACR_URL/kwazo-comment:IMAGE_LABEL         
+        envFrom:
+        - secretRef:
+            name: kwazo-comment-database
+        - secretRef:
+            name: kwazo
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 250m
 ---
 apiVersion: v1
 kind: Service
